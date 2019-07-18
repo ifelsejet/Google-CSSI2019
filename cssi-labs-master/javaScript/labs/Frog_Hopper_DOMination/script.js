@@ -14,8 +14,41 @@
 
 let currentlily = 1;
 
-const frogger = /* Use a querySelector to grab your frog from your HTML */;
+/* Use a querySelector to grab your frog from your HTML */;
+const frogger = document.querySelector("#frog");
 
-frogger.addEventListener(/* Insert type of event are we listening for */, (e) => {
-  // Insert what should happen when you click on the frog!
+//Click to go to the next lilypad
+frogger.addEventListener('click', () =>{
+frogger.style.left = "33.5%";
+frogger.style.top = "24%"});
+
+//Make second lilypad glow once frog has moved on, once it
+//has moved on, make first lilypad "de-glow"
+const lPad1 = document.querySelector("#lilypad1");
+const lPad2 = document.querySelector("#lilypad2");
+
+frogger.addEventListener('click', () =>{
+  lPad1.classList.remove("active");
+  lPad2.classList.add("active");
+
+});
+
+//when mouse is over frog, increase size to 80px x 80px
+ frogger.addEventListener('mouseover', () => {
+   frogger.style.height = "80px";
+   frogger.style.width = "80px";
+ });
+
+//when mouse is not over frog, decrease size to original
+frogger.addEventListener('mouseout', () => {
+  frogger.style.height = "70px";
+  frogger.style.width = "70px";
+});
+
+//click space to reset game
+const gameBoard = document.querySelector("#board");
+
+gameBoard.addEventListener("keypress", () => {
+  gameBoard.classList.add("board");
+  console.log("Key Pressed!");
 });

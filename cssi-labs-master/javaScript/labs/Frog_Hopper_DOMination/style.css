@@ -25,6 +25,11 @@
   width: 70px;
 }
 
+#froghover{
+  height: 80px;
+  width: 80px;
+}
+
 .lilypad {
   border-radius: 50%;
   height: 100px;
