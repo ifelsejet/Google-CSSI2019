@@ -16,6 +16,7 @@
 
 choice = ""
 
+
 print("Welcome to the shopping list app!")
 
 shopping_list = []
@@ -31,3 +32,7 @@ while choice.lower() != "e":
     choice = raw_input("Enter your choice [a|b|c|d|e]:")
 
     # Your code below! Handle the cases when the user chooses a, b, c, d, or e
+if(choice == "a"):
+    print("What would you like to add to the list?")
+
+    shopping_list.insert("")
