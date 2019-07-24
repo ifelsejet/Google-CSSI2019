@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+  </head>
+  <body>
+    <h1>Hello World</h1>
+    <ul>
+      <!--
+      TODO:
+      1.) Link to an email page
+
+    -->
+      {% for email in inbox %}
+        {% if email.unread==true and email.spam == false %}
+        <li><b>{{email.subject}}</b></li>
+        {% elif email.unread==true and email.spam == true  %}
+        <li style="display:none;"">{{email.subject}}</li>
+        {% else %}
+        <li>{{email.subject}}</li>
+
+        {% endif %}
+        {% endfor %}
+
+
+    </ul>
+  </body>
+</html>
