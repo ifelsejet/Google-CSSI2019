@@ -9,41 +9,21 @@ jinja_env = jinja2.Environment(
     loader = jinja2.FileSystemLoader(os.path.dirname(__file__))
 )
 
-class MainPage(webapp2.RequestHandler):
-    def get(self):
-        #name = self.request.get('name') or 'World'
-        movies_list = Movie.query().fetch()
-        template_vars = {
-        'movies' : movies_list,
-        }
-        template = jinja_env.get_template("main.html")
-        self.response.write(template.render(template_vars))
 
-# 1. New handler for /populateDatabase
-# --> Adds a few movies and stars
-# 2. After adding, redirect back to '/'
+class Star(ndb.Model):
+    name = ndb.StringProperty(required=True)
+    oscars = ndb.IntegerProperty(required=True)
 
-#print Movie.query().fetch()
-#print Movie.query().filter()
-#print Movie.query().fetch()
-#movie_query = Movie.query().filter(
-#    Movie.rating > 9).order(-Movie.rating)
-#movie_list = movie_query.fetch()
-#for movie in movie_list:
-#    print movie.title
-#print movie_list
-
-
-
-
+    def describe(self):
+        return "%s has won %s Oscars" % (self.name, self.oscars)
 
 class Movie(ndb.Model):
     title = ndb.StringProperty(required =True)
     runtime = ndb.IntegerProperty(required =True)
     rating = ndb.FloatProperty(required =True,default=0)
-    star_names = ndb.StringProperty(
+    star_keys = ndb.KeyProperty(
+    kind=Star,
     required=False,
-    # default=[],
     repeated = True
     )
 
@@ -51,43 +31,56 @@ class Movie(ndb.Model):
     def describe(self): #for a get request
         return "%s is %d minute(s) long, with a rating of %f" % (self.title, self.runtime, self.rating)
 
-class Star(ndb.Model):
-    name = ndb.StringProperty(required=True)
-    oscarsWon = ndb.IntegerProperty(required=True)
-    retired = ndb.BooleanProperty(required=True)
-
-    def describe(self):
-        if not self.retired:
-            return "%s has won %s Oscars and is not retired" % (self.name, self.oscarsWon)
-
-        else:
-            return "%s has won %s Oscars and is retired" % (self.name, self.oscarsWon)
-
-
 class populateDatabase(webapp2.RequestHandler):
     def get(self):
-        spiderverse = Movie(
-            title ="Into the Spiderverse",
-            runtime = 117,
-            rating = 9.99
+        shameik_key = Star(name='Shameik Moore', oscars = 1).put()#put returns a key
+        seth_rogan = Star(name = 'Seth Rogan', oscars = 5).put()
+        keanu_reeves = Star(name = 'Keanu Reeves', oscars = 5).put()
+        james_earl_jones = Star(name = 'James Earl Jones', oscars = 365).put()
+        #key -> unique ID to perticular identifier
+        # sort of like your social sercuity #
+        # .get() to get the key
 
-        )
-        shameik_moore = Star(
-            name = "Shameik Moore",
-            oscarsWon = 5,
-            retired = False
-        )
-        #template = jinja_env.get_template("movies.html")
-        spiderverse.put()
-        shameik_moore.put()
+        print shameik_key
 
+        Movie(
+        title = "SpiderMan",
+        runtime = 144,
+        rating = 7.5,
+        star_keys = [shameik_key, seth_rogan, keanu_reeves, james_earl_jones]).put()
 
-        #redirect back to MainPage
-        #self.redirect('/')
-        #localhost:8000 to view dev board
+        Movie(
+        title = "Lion King",
+        runtime = 118,
+        rating = 8,
+        star_keys = [shameik_key, seth_rogan]).put()
 
-#print spiderverse.describe()
-#print shameik_moore.describe()
+class MainPage(webapp2.RequestHandler):
+    def get(self):
+        movies_list = Movie.query().fetch()
+        # TODO: Get Star list from query and fetching
+        #Loop through the star
+        # Populate dictionary with star name and # of oscars
+        star_list = Star.query().fetch()
+
+        """
+        oscars = {
+
+        } #Empty dictionary
+        """
+
+        #for star in star_list:
+            #oscars.update([star:star.oscars])
+            #oscars[star.name] = star.oscars
+        #print 'oscars is', oscars
+
+        template_vars = {
+        'movies' : movies_list,
+        'star_name' : star_list,
+        #'oscars' : oscars,
+        }
+        template = jinja_env.get_template("main.html")
+        self.response.write(template.render(template_vars))
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),

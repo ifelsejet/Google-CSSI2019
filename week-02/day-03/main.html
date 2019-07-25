@@ -9,11 +9,14 @@
     <h2>Movie Titles:</h2>
     <ul>
     {% for movie in movies %}
-    <li>{{movie.title}}</li>
-    
-      <li>Star 1: {{movie.star_names[0]}}</li>
-      <li>Star 2: {{movie.star_names[1]}}</li>
-      <li>Star 3  {{movie.star_names[2]}}:</li>
+    <li>{{movie.title}}
+    <ul>
+    {% for star_name in movie.star_keys %}
+  <!--  <li>{{star_name}} : {{oscars[star_key]}}</li> -->
+    <!-- TODO : Look up the number of oscars given a star name -->
+    {% endfor %}
+    </ul>
+    </li>
     {% endfor %}
     </ul>
   </body>
