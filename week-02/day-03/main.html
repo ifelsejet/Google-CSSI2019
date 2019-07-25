@@ -11,9 +11,11 @@
     {% for movie in movies %}
     <li>{{movie.title}}
     <ul>
-    {% for star_name in movie.star_keys %}
-  <!--  <li>{{star_name}} : {{oscars[star_key]}}</li> -->
-    <!-- TODO : Look up the number of oscars given a star name -->
+    {% for star_key in movie.star_keys %}
+      <li> {{star_key.get().name}} : {{star_key.get().oscars}}</li>
+
+
+      <!-- TODO : Look up the number of oscars given a star name -->
     {% endfor %}
     </ul>
     </li>

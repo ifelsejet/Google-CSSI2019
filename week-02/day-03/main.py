@@ -41,7 +41,8 @@ class populateDatabase(webapp2.RequestHandler):
         # sort of like your social sercuity #
         # .get() to get the key
 
-        print shameik_key
+        #print shameik_key.get().name
+
 
         Movie(
         title = "SpiderMan",
@@ -55,6 +56,7 @@ class populateDatabase(webapp2.RequestHandler):
         rating = 8,
         star_keys = [shameik_key, seth_rogan]).put()
 
+
 class MainPage(webapp2.RequestHandler):
     def get(self):
         movies_list = Movie.query().fetch()
@@ -63,21 +65,11 @@ class MainPage(webapp2.RequestHandler):
         # Populate dictionary with star name and # of oscars
         star_list = Star.query().fetch()
 
-        """
-        oscars = {
-
-        } #Empty dictionary
-        """
-
-        #for star in star_list:
-            #oscars.update([star:star.oscars])
-            #oscars[star.name] = star.oscars
-        #print 'oscars is', oscars
 
         template_vars = {
         'movies' : movies_list,
         'star_name' : star_list,
-        #'oscars' : oscars,
+
         }
         template = jinja_env.get_template("main.html")
         self.response.write(template.render(template_vars))
