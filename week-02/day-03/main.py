@@ -3,7 +3,11 @@ import webapp2
 import logging
 import jinja2
 import os
+
 from google.appengine.ext import ndb
+from google.appengine.api import users
+
+
 
 jinja_env = jinja2.Environment(
     loader = jinja2.FileSystemLoader(os.path.dirname(__file__))
@@ -37,7 +41,7 @@ class populateDatabase(webapp2.RequestHandler):
         seth_rogan = Star(name = 'Seth Rogan', oscars = 5).put()
         keanu_reeves = Star(name = 'Keanu Reeves', oscars = 5).put()
         james_earl_jones = Star(name = 'James Earl Jones', oscars = 365).put()
-        #key -> unique ID to perticular identifier
+        #key -> unique ID to particular identifier
         # sort of like your social sercuity #
         # .get() to get the key
 
@@ -60,15 +64,13 @@ class populateDatabase(webapp2.RequestHandler):
 class MainPage(webapp2.RequestHandler):
     def get(self):
         movies_list = Movie.query().fetch()
-        # TODO: Get Star list from query and fetching
-        #Loop through the star
-        # Populate dictionary with star name and # of oscars
-        star_list = Star.query().fetch()
-
+        current_user = users.get_current_user()
+        signin_link = users.create_login_url('/')
 
         template_vars = {
         'movies' : movies_list,
-        'star_name' : star_list,
+        'current_user': current_user,
+        'signin_link' : signin_link,
 
         }
         template = jinja_env.get_template("main.html")

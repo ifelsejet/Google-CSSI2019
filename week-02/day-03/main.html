@@ -2,17 +2,22 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Test</title>
+    <title>Faux IDMB</title>
   </head>
   <body>
-    <h1>Hello {{name}}</h1>
+    <h1>Movies</h1>
+    <p>Current user is {{current_user.email()}}</p>
+    <p>Current user is {{current_user.user_id()}}</p>
+    <p>Login URL:<a href="{{signin_link}}"> Login</a></p>
+
     <h2>Movie Titles:</h2>
     <ul>
     {% for movie in movies %}
     <li>{{movie.title}}
     <ul>
     {% for star_key in movie.star_keys %}
-      <li> {{star_key.get().name}} : {{star_key.get().oscars}}</li>
+    {% set star = star_key.get()%}<!--Makes a variable for getting the star key -->
+      <li> {{star.name}} : {{star.oscars}}</li>
 
 
       <!-- TODO : Look up the number of oscars given a star name -->
